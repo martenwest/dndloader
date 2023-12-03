@@ -5,19 +5,50 @@
 
   export let loadingSeconds: number;
   let progress = 0;
+  let index = 0;
+
+  const possibleProgressSteps = [
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2,
+    0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 2, 0, 3, 0, 0, 3, 0, 0, 3, 0, 0, 3,
+    0, 0, 3, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0, 0, 4, 0, 0, 0, 4,
+    0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0,
+  ];
+
+  function shuffle(array: number[]) {
+    let currentIndex = array.length,
+      randomIndex;
+
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
+  }
+
+  const shuffledProgressSteps = shuffle(possibleProgressSteps);
 
   const interval = setInterval(() => {
-    progress += 1;
+    progress += shuffledProgressSteps[index];
+    index++;
+
     if (progress === 100) {
-      clearInterval(interval);
-      dispatch("complete");
+      setTimeout(() => {
+        clearInterval(interval);
+        dispatch("complete");
+      }, 400);
     }
   }, loadingSeconds * 10);
 </script>
 
-<div class="h-4 w-96 overflow-hidden rounded bg-gray-300">
+<div class="h-6 w-full bg-black/70">
   <div
-    class="h-4 bg-red-300 duration-1000 ease-linear"
+    class="h-6 bg-purple-950/70 duration-200 ease-linear"
     style="width: {progress}%"
   ></div>
 </div>
