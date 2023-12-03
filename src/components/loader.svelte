@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { ComponentEvents } from "svelte";
   import LoaderBar from "./loader-bar.svelte";
+  import LoaderHint from "./loader-hint.svelte";
   import LoaderInput from "./loader-input.svelte";
 
   let status: "idle" | "loading" | "complete" = "idle";
@@ -21,20 +22,28 @@
   }
 </script>
 
-<div class="fixed flex h-screen w-screen justify-center p-4">
-  {#if status === "idle"}
-    <div class="absolute">
+<div class="fixed flex h-screen w-screen justify-center">
+  <div
+    class="absolute flex h-48 w-full flex-col justify-between self-end bg-black/80 px-96 py-8 text-white"
+  >
+    {#if status === "idle"}
       <LoaderInput on:start={handleStart} />
-    </div>
-  {:else if status === "loading"}
-    <div class="absolute self-center">
-      <LoaderBar {loadingSeconds} on:complete={handleComplete} />
-    </div>
-  {:else if status === "complete"}
-    <div class="absolute self-center">
-      <button class="rounded bg-gray-100 px-4 py-2" on:click={handlePlay}>
-        Play
-      </button>
-    </div>
-  {/if}
+    {:else}
+      <div>
+        <LoaderHint />
+      </div>
+      <div class="flex justify-center">
+        {#if status === "complete"}
+          <button
+            class="w-96 bg-purple-950/70 px-4 py-2 text-purple-50 hover:bg-purple-900/70"
+            on:click={handlePlay}
+          >
+            Play
+          </button>
+        {:else}
+          <LoaderBar {loadingSeconds} on:complete={handleComplete} />
+        {/if}
+      </div>
+    {/if}
+  </div>
 </div>
