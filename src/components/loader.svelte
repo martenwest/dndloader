@@ -1,16 +1,40 @@
-<script>
-    let progress = 0;
+<script lang="ts">
+  import type { ComponentEvents } from "svelte";
+  import LoaderBar from "./loader-bar.svelte";
+  import LoaderInput from "./loader-input.svelte";
 
-    const interval = setInterval(() => {
-        progress += 1;
-        if (progress === 100) {
-            clearInterval(interval);
-        }
-    }, 20);
+  let status: "idle" | "loading" | "complete" = "idle";
+  let loadingSeconds = 0;
+
+  function handleStart(event: ComponentEvents<LoaderInput>["start"]) {
+    status = "loading";
+    loadingSeconds = event.detail.seconds;
+  }
+
+  function handleComplete() {
+    status = "complete";
+    loadingSeconds = 0;
+  }
+
+  function handlePlay() {
+    status = "idle";
+  }
 </script>
 
-<div class="fixed h-screen w-screen flex items-center justify-center">
-    <div class="w-96 h-4 bg-gray-300">
-        <div class="h-4 bg-red-300" style="width: {progress}%"></div>
+<div class="fixed flex h-screen w-screen justify-center p-4">
+  {#if status === "idle"}
+    <div class="absolute">
+      <LoaderInput on:start={handleStart} />
     </div>
+  {:else if status === "loading"}
+    <div class="absolute self-center">
+      <LoaderBar {loadingSeconds} on:complete={handleComplete} />
+    </div>
+  {:else if status === "complete"}
+    <div class="absolute self-center">
+      <button class="rounded bg-gray-100 px-4 py-2" on:click={handlePlay}>
+        Play
+      </button>
+    </div>
+  {/if}
 </div>
