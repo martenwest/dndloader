@@ -8,17 +8,29 @@
   }
 </script>
 
-<div class="flex gap-2 text-gray-900">
-  <button on:click={() => start(60)} class="rounded bg-gray-100 px-4 py-2">
+<div class="flex h-full justify-between gap-4 text-purple-50">
+  <button
+    on:click={() => start(60)}
+    class="w-full bg-purple-950/70 px-3 py-2 hover:bg-purple-900/70"
+  >
     1m
   </button>
-  <button on:click={() => start(300)} class="rounded bg-gray-100 px-4 py-2">
+  <button
+    on:click={() => start(300)}
+    class="w-full bg-purple-950/70 px-3 py-2 hover:bg-purple-900/70"
+  >
     5m
   </button>
-  <button on:click={() => start(900)} class="rounded bg-gray-100 px-4 py-2">
+  <button
+    on:click={() => start(900)}
+    class="w-full bg-purple-950/70 px-3 py-2 hover:bg-purple-900/70"
+  >
     15m
   </button>
-  <button on:click={() => start(1800)} class="rounded bg-gray-100 px-4 py-2">
+  <button
+    on:click={() => start(1800)}
+    class="w-full bg-purple-950/70 px-3 py-2 hover:bg-purple-900/70"
+  >
     30m
   </button>
 </div>
